@@ -2,6 +2,7 @@
 //SubShortCut
 //this file is part of notepad++
 //
+//	0Å`9 : input line number : jump to specified line
 //	B : go to bottom of file
 //	E : save file & quit editor
 //	N : open file
@@ -134,6 +135,23 @@ void SubShortCut ()
 		}
 
 		switch( msg.wParam ){
+
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			{
+			// jump to specified line
+		    ::SendMessage( nppData._nppHandle,
+								NPPM_MENUCOMMAND, 0, IDM_SEARCH_GOTOLINE );
+			}
+			return;
 
 		case 'B':
 		case 'b':
