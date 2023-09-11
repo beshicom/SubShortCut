@@ -2,9 +2,10 @@
 //SubShortCut
 //this file is part of notepad++
 //
-//	E : save & quit
+//	E : save file & quit editor
 //	N : open file
-//	S : save
+//	O : reopen file
+//	S : save file
 //
 // if you set SubShortCut at short cut ESC, for example,
 //	push ESC, and push N, then open file.
@@ -139,6 +140,15 @@ void SubShortCut ()
 			// open file
 		    ::SendMessage( nppData._nppHandle,
 										NPPM_MENUCOMMAND, 0, IDM_FILE_OPEN );
+			}
+			return;
+
+		case 'O':
+		case 'o':
+			{
+			// reopen file
+		    ::SendMessage( nppData._nppHandle,
+										NPPM_MENUCOMMAND, 0, IDM_FILE_RELOAD );
 			}
 			return;
 
