@@ -6,6 +6,7 @@
 //	N : open file
 //	O : reopen file
 //	S : save file
+//	T : go to top of file
 //
 // if you set SubShortCut at short cut ESC, for example,
 //	push ESC, and push N, then open file.
@@ -92,6 +93,16 @@ bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey 
 
 #include	<conio.h>
 
+HWND GetCurrentScintilla ()
+{
+    int	which = -1;
+    ::SendMessage( nppData._nppHandle,
+							NPPM_GETCURRENTSCINTILLA, 0, (LPARAM)&which );
+    if( which == -1 ) return NULL;
+	return (which == 0) ?
+				nppData._scintillaMainHandle : nppData._scintillaSecondHandle ;
+}
+
 //
 // もうひとつキー入力を受けて、それに割り当てられた処理をする。
 //
@@ -158,6 +169,14 @@ void SubShortCut ()
 			// save
 		    ::SendMessage( nppData._nppHandle,
 										NPPM_MENUCOMMAND, 0, IDM_FILE_SAVE );
+			}
+			return;
+
+		case 'T':
+		case 't':
+			{
+			// go to top of file
+		    ::SendMessage( GetCurrentScintilla(), SCI_GOTOLINE, 0, 0 );
 			}
 			return;
 
