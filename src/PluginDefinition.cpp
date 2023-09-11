@@ -2,6 +2,7 @@
 //SubShortCut
 //this file is part of notepad++
 //
+//	B : go to bottom of file
 //	E : save file & quit editor
 //	N : open file
 //	O : reopen file
@@ -133,6 +134,17 @@ void SubShortCut ()
 		}
 
 		switch( msg.wParam ){
+
+		case 'B':
+		case 'b':
+			{
+			// go to bottom of file
+			int	n = (int)::SendMessage( GetCurrentScintilla(),
+													SCI_GETLINECOUNT, 0, 0 );
+		    ::SendMessage( GetCurrentScintilla(),
+												SCI_GOTOLINE, (WPARAM)n, 0 );
+			}
+			return;
 
 		case 'E':
 		case 'e':
