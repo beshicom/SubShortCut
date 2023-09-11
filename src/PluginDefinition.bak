@@ -3,62 +3,152 @@
 //this file is part of notepad++
 //
 
-#ifndef PLUGINDEFINITION_H
-#define PLUGINDEFINITION_H
+#include "PluginDefinition.h"
+#include "menuCmdID.h"
 
 //
-// All difinitions of plugin interface
+// The plugin data that Notepad++ needs
 //
-#include "PluginInterface.h"
-
-//-------------------------------------//
-//-- STEP 1. DEFINE YOUR PLUGIN NAME --//
-//-------------------------------------//
-// Here define your plugin name
-//
-const TCHAR NPP_PLUGIN_NAME[] = TEXT("SubShortCut");
-
-//-----------------------------------------------//
-//-- STEP 2. DEFINE YOUR PLUGIN COMMAND NUMBER --//
-//-----------------------------------------------//
-//
-// Here define the number of your plugin commands
-//
-const int nbFunc = 1;
-
+FuncItem funcItem[nbFunc];
 
 //
-// Initialization of your plugin data
-// It will be called while plugin loading
+// The data of Notepad++ that you can use in your plugin commands
 //
-void pluginInit(HANDLE hModule);
+NppData nppData;
 
 //
-// Cleaning of your plugin
-// It will be called while plugin unloading
-//
-void pluginCleanUp();
+// Initialize your plugin data here
+// It will be called while plugin loading   
+void pluginInit(HANDLE /*hModule*/)
+{
+}
 
 //
-//Initialization of your plugin commands
+// Here you can do the clean up, save the parameters (if any) for the next session
 //
-void commandMenuInit();
+void pluginCleanUp()
+{
+}
 
 //
-//Clean up your plugin commands allocation (if any)
-//
-void commandMenuCleanUp();
+// Initialization of your plugin commands
+// You should fill your plugins commands here
+void commandMenuInit()
+{
+
+    //--------------------------------------------//
+    //-- STEP 3. CUSTOMIZE YOUR PLUGIN COMMANDS --//
+    //--------------------------------------------//
+    // with function :
+    // setCommand(int index,                      // zero based number to indicate the order of command
+    //            TCHAR *commandName,             // the command name that you want to see in plugin menu
+    //            PFUNCPLUGINCMD functionPointer, // the symbol of function (function pointer) associated with this command. The body should be defined below. See Step 4.
+    //            ShortcutKey *shortcut,          // optional. Define a shortcut to trigger this command
+    //            bool check0nInit                // optional. Make this menu item be checked visually
+    //            );
+    setCommand(0, TEXT("SubShortCut"), SubShortCut, NULL, false);
+}
 
 //
-// Function which sets your command 
+// Here you can do the clean up (especially for the shortcut)
 //
-bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey *sk = NULL, bool check0nInit = false);
+void commandMenuCleanUp()
+{
+	// Don't forget to deallocate your shortcut here
+}
 
 
 //
-// Your plugin command functions
+// This function help you to initialize your plugin commands
 //
-void hello();
-void helloDlg();
+bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey *sk, bool check0nInit) 
+{
+    if (index >= nbFunc)
+        return false;
 
-#endif //PLUGINDEFINITION_H
+    if (!pFunc)
+        return false;
+
+    lstrcpy(funcItem[index]._itemName, cmdName);
+    funcItem[index]._pFunc = pFunc;
+    funcItem[index]._init2Check = check0nInit;
+    funcItem[index]._pShKey = sk;
+
+    return true;
+}
+
+//----------------------------------------------//
+//-- STEP 4. DEFINE YOUR ASSOCIATED FUNCTIONS --//
+//----------------------------------------------//
+//
+
+#include	<conio.h>
+
+//
+// もうひとつキー入力を受けて、それに割り当てられた処理をする。
+//
+void SubShortCut ()
+{
+
+	int		c = 'A';
+
+	while( 1 ){
+
+		/*
+		if( _kbhit() != 0 ){
+			c = _getch();
+			char	b[100];
+			sprintf( b, "SubShortCut : c = %d %c\n", c, c );
+			::MessageBox( NULL, (LPCTSTR)b, TEXT( "SubShortCut" ), MB_OK );
+			if( ( c == 'n' )||( c == 'N' ) ){ c = 'N'; break; }
+		}
+		*/
+
+		MSG			msg;
+		GetMessage( &msg, NULL, 0, 0 );
+
+		if( msg.message != WM_CHAR ){
+			TranslateMessage( &msg );
+			DispatchMessage( &msg );
+			continue;
+		}
+
+		switch( msg.wParam ){
+
+		case 'N':
+		case 'n':
+			{
+			}
+			return;
+
+		default:
+			return;
+
+		}// switch msg.wParam
+
+	}// while 1
+
+	/*
+
+    // Open a new document
+    ::SendMessage(nppData._nppHandle, NPPM_MENUCOMMAND, 0, IDM_FILE_NEW);
+
+    // Get the current scintilla
+    int which = -1;
+    ::SendMessage(nppData._nppHandle, NPPM_GETCURRENTSCINTILLA, 0, (LPARAM)&which);
+    if (which == -1)
+        return;
+    HWND curScintilla = (which == 0)?nppData._scintillaMainHandle:nppData._scintillaSecondHandle;
+
+    // Say hello now :
+    // Scintilla control has no Unicode mode, so we use (char *) here
+	char	b[100];
+	sprintf( b, "SubShortCut : c = %d %c\n", c, c );
+    ::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)b);
+
+	*/
+
+}
+
+
+

@@ -81,10 +81,55 @@ bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey 
 //-- STEP 4. DEFINE YOUR ASSOCIATED FUNCTIONS --//
 //----------------------------------------------//
 //
+
+#include	<conio.h>
+
+//
 // もうひとつキー入力を受けて、それに割り当てられた処理をする。
 //
 void SubShortCut ()
 {
+
+	//int		c = 'A';
+
+	while( 1 ){
+
+		/*
+		if( _kbhit() != 0 ){
+			c = _getch();
+			char	b[100];
+			sprintf( b, "SubShortCut : c = %d %c\n", c, c );
+			::MessageBox( NULL, (LPCTSTR)b, TEXT( "SubShortCut" ), MB_OK );
+			if( ( c == 'n' )||( c == 'N' ) ){ c = 'N'; break; }
+		}
+		*/
+
+		MSG			msg;
+		GetMessage( &msg, NULL, 0, 0 );
+
+		if( msg.message != WM_CHAR ){
+			TranslateMessage( &msg );
+			DispatchMessage( &msg );
+			continue;
+		}
+
+		switch( msg.wParam ){
+
+		case 'N':
+		case 'n':
+			{
+			}
+			return;
+
+		default:
+			return;
+
+		}// switch msg.wParam
+
+	}// while 1
+
+	/*
+
     // Open a new document
     ::SendMessage(nppData._nppHandle, NPPM_MENUCOMMAND, 0, IDM_FILE_NEW);
 
@@ -97,7 +142,12 @@ void SubShortCut ()
 
     // Say hello now :
     // Scintilla control has no Unicode mode, so we use (char *) here
-    ::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)"SubShortCut");
+	char	b[100];
+	sprintf( b, "SubShortCut : c = %d %c\n", c, c );
+    ::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)b);
+
+	*/
+
 }
 
 
