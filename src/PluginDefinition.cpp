@@ -3,6 +3,7 @@
 //this file is part of notepad++
 //
 //	N : open file
+//	S : save
 //
 // if you set SubShortCut at short cut ESC, for example,
 //	push ESC, and push N, then open file.
@@ -126,6 +127,15 @@ void SubShortCut ()
 			// open file
 		    ::SendMessage( nppData._nppHandle,
 										NPPM_MENUCOMMAND, 0, IDM_FILE_OPEN );
+			}
+			return;
+
+		case 'S':
+		case 's':
+			{
+			// save
+		    ::SendMessage( nppData._nppHandle,
+										NPPM_MENUCOMMAND, 0, IDM_FILE_SAVE );
 			}
 			return;
 
