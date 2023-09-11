@@ -3,12 +3,15 @@
 //this file is part of notepad++
 //
 //	0～9 : input line number : jump to specified line
+//	[ : brace match
 //	B : go to bottom of file
 //	E : save file & quit editor
 //	N : open file
 //	O : reopen file
 //	S : save file
 //	T : go to top of file
+//
+//	esc a 全てをセーブして終了
 //
 // if you set SubShortCut at short cut ESC, for example,
 //	push ESC, and push N, then open file.
@@ -150,6 +153,15 @@ void SubShortCut ()
 			// jump to specified line
 		    ::SendMessage( nppData._nppHandle,
 								NPPM_MENUCOMMAND, 0, IDM_SEARCH_GOTOLINE );
+			}
+			return;
+
+		case '[':
+			{
+			// brace match
+			//::SendMessage( GetCurrentScintilla(), SCI_BRACEMATCH, 0, 0 );
+		    ::SendMessage( nppData._nppHandle,
+						NPPM_MENUCOMMAND, 0, IDM_SEARCH_GOTOMATCHINGBRACE );
 			}
 			return;
 
