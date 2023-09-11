@@ -2,6 +2,7 @@
 //SubShortCut
 //this file is part of notepad++
 //
+//	E : save & quit
 //	N : open file
 //	S : save
 //
@@ -120,6 +121,17 @@ void SubShortCut ()
 		}
 
 		switch( msg.wParam ){
+
+		case 'E':
+		case 'e':
+			{
+			// save and quit
+		    ::SendMessage( nppData._nppHandle,
+										NPPM_MENUCOMMAND, 0, IDM_FILE_SAVE );
+		    ::SendMessage( nppData._nppHandle,
+										NPPM_MENUCOMMAND, 0, IDM_FILE_EXIT );
+			}
+			return;
 
 		case 'N':
 		case 'n':
