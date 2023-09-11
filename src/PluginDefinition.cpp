@@ -6,6 +6,7 @@
 //	[ : brace match
 //	B : go to bottom of file
 //	E : save file & quit editor
+//	I : insert file
 //	N : open file
 //	O : reopen file
 //	S : save file
@@ -184,6 +185,22 @@ void SubShortCut ()
 										NPPM_MENUCOMMAND, 0, IDM_FILE_SAVE );
 		    ::SendMessage( nppData._nppHandle,
 										NPPM_MENUCOMMAND, 0, IDM_FILE_EXIT );
+			}
+			return;
+
+		case 'I':
+		case 'i':
+			{
+		    ::SendMessage( nppData._nppHandle,
+										NPPM_MENUCOMMAND, 0, IDM_FILE_OPEN );
+		    ::SendMessage( nppData._nppHandle,
+									NPPM_MENUCOMMAND, 0, IDM_EDIT_SELECTALL );
+		    ::SendMessage( nppData._nppHandle,
+										NPPM_MENUCOMMAND, 0, IDM_EDIT_COPY );
+		    ::SendMessage( nppData._nppHandle,
+										NPPM_MENUCOMMAND, 0, IDM_FILE_CLOSE );
+		    ::SendMessage( nppData._nppHandle,
+									NPPM_MENUCOMMAND, 0, IDM_EDIT_PASTE );
 			}
 			return;
 
