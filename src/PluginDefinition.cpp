@@ -2,6 +2,11 @@
 //SubShortCut
 //this file is part of notepad++
 //
+//	N : open file
+//
+// if you set SubShortCut at short cut ESC, for example,
+//	push ESC, and push N, then open file.
+//
 
 #include "PluginDefinition.h"
 #include "menuCmdID.h"
@@ -118,6 +123,9 @@ void SubShortCut ()
 		case 'N':
 		case 'n':
 			{
+			// open file
+		    ::SendMessage( nppData._nppHandle,
+										NPPM_MENUCOMMAND, 0, IDM_FILE_OPEN );
 			}
 			return;
 
