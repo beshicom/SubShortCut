@@ -1,0 +1,2 @@
+# SubShortCut
+SubShortCut for notepad++
